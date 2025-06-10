@@ -17,7 +17,7 @@ local.properties
 # ───────────────────────────────────────────────────────
 # Ignore signing keys & config
 # ───────────────────────────────────────────────────────
-keystore.properties
+app/keystore.properties
 *.jks
 # if you keep your keystores in a folder named "keystores/"
 keystores/
