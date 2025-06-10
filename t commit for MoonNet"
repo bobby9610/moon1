@@ -1,0 +1,8 @@
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=https://github.com/bobby9610/moon1.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+user.name=bobby9610
+user.email=kumeelalnahab@gmail.com
