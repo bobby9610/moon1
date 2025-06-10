@@ -73,6 +73,7 @@ dependencies {
     // Espresso — core APIs for UI testing
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     // (Optional) if you need intents validation
-    androidTestImplementation("androidx.test.espresso")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
 
 }
+
