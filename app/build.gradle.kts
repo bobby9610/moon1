@@ -1,9 +1,15 @@
-// Remove or comment out this line:
-// import org.gradle.internal.impldep.org.jsoup.Connection
+// 1️⃣ Imports at the very top
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+}
+
+// 2️⃣ Load your keystore credentials
+val keystorePropsFile = rootProject.file("keystore")
+val keystoreProps = Properties().apply {
+    load(keystorePropsFile.inputStream())
 }
 
 android {
@@ -17,17 +23,30 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // tells Gradle which runner to use for instrumentation tests
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // 3️⃣ Signing config for release
+    signingConfigs {
+        create("release") {
+            storeFile     = file(keystoreProps["storeFile"]    as String)
+            storePassword = keystoreProps["storePassword"]      as String
+            keyAlias      = keystoreProps["keyAlias"]           as String
+            keyPassword   = keystoreProps["keyPassword"]        as String
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig   = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            // debug builds are auto-signed by Gradle
         }
     }
 
@@ -38,19 +57,17 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
     externalNativeBuild {
         cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
+            path    = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
         }
     }
-
     buildFeatures {
         viewBinding = true
     }
 
-    // Optional: use AndroidX Test Orchestrator for isolated tests
+    // Optional: Orchestrator for isolated Espresso runs
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
@@ -67,13 +84,9 @@ dependencies {
     testImplementation(libs.junit)
 
     // AndroidX Test — JUnit rules & runners
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:runner:1.6.2")
-
-    // Espresso — core APIs for UI testing
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    // (Optional) if you need intents validation
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
-
+    androidTestImplementation(libs.androidx.junit)    // e.g. "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation(libs.androidx.runner)
 }
+// e.g. "androidx.test:runner:1.5.2"
 
+// Espresso — core & intents
