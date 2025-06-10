@@ -1,0 +1,34 @@
+workflows:
+  android-espresso:
+    name: Android + Espresso tests
+    max_build_duration: 60
+    environment:
+      vars:
+        ANDROID_EMULATOR_API_LEVEL: "30"
+        ANDROID_EMULATOR_IMAGE: "system-images;android-${ANDROID_EMULATOR_API_LEVEL};google_apis;x86"
+    scripts:
+      - name: Accept Android SDK licenses
+        script: yes | sdkmanager --licenses
+
+      - name: Install required SDK components
+        script: |
+          sdkmanager "platforms;android-${ANDROID_EMULATOR_API_LEVEL}"
+          sdkmanager "emulator"
+          sdkmanager "${ANDROID_EMULATOR_IMAGE}"
+
+      - name: Create AVD
+        script: echo "no" | avdmanager create avd -n testAVD -k "${ANDROID_EMULATOR_IMAGE}" --device "pixel"
+
+      - name: Start emulator
+        script: |
+          nohup emulator -avd testAVD -no-window -no-audio -gpu swiftshader_indirect &
+          adb wait-for-device
+          adb shell input keyevent 82  # unlock
+
+      - name: Run unit & instrumentation tests
+        script: |
+          ./gradlew clean testDebugUnitTest connectedDebugAndroidTest
+
+    artifacts:
+      - app/build/reports/**/*
+      - app/build/outputs/androidTest-results/connected/**/*
