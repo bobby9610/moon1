@@ -1,43 +1,23 @@
 workflows:
   android-espresso:
-    name: Android + Espresso tests
-    max_build_duration: 60
+    name: Android Espresso CI
+    triggering:
+      events:
+        - push
+        - pull_request
     environment:
-      vars:
-        ANDROID_EMULATOR_API_LEVEL: "30"
-        ANDROID_EMULATOR_IMAGE: "system-images;android-${ANDROID_EMULATOR_API_LEVEL};google_apis;x86"
+      android:
+        java: openjdk11
     scripts:
-      - name: Accept Android SDK licenses
-        script: yes | sdkmanager --licenses
-
-      - name: Install required SDK components
+      - name: Run lint, unit tests & assemble debug APK
+        script: ./gradlew --no-daemon lint test assembleDebug
+      - name: Start emulator (if you have one)
         script: |
-          sdkmanager "platforms;android-${ANDROID_EMULATOR_API_LEVEL}"
-          sdkmanager "emulator"
-          sdkmanager "${ANDROID_EMULATOR_IMAGE}"
-
-      - name: Create AVD
-        script: echo "no" | avdmanager create avd -n testAVD -k "${ANDROID_EMULATOR_IMAGE}" --device "pixel"
-
-      - name: Start emulator
-        script: |
-          nohup emulator -avd testAVD -no-window -no-audio -gpu swiftshader_indirect &
-          adb wait-for-device
-          adb shell input keyevent 82  # unlock
-
-      - name: Run unit & instrumentation tests
-        script: |
-          ./gradlew clean testDebugUnitTest connectedDebugAndroidTest
-
+          adb start-server
+          adb devices
+      - name: Run instrumentation tests
+        script: ./gradlew connectedAndroidTest --continue
     artifacts:
-      - app/build/reports/**/*
-      - app/build/outputs/androidTest-results/connected/**/*
-scripts:
-  - name: Sync with remote
-    script: |
-      git config user.name "Codemagic"
-      git config user.email "ci@codemagic.io"
-      git pull --rebase origin main
-  - name: Push changes
-    script: |
-      git push origin main
+      - app/build/outputs/apk/debug/app-debug.apk
+      - app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+
