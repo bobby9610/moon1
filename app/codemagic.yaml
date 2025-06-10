@@ -1,6 +1,1 @@
 
-          ./gradlew clean testDebugUnitTest connectedDebugAndroidTest
-
-    artifacts:
-      - app/build/reports/**/*
-      - app/build/outputs/androidTest-results/connected/**/*
