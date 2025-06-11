@@ -1,34 +1,35 @@
-package com.example.moonnet
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+xmlns:android="http://schemas.android.com/apk/res/android">
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.TextView
-import com.example.moonnet.databinding.ActivityMainBinding
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="32dp">
 
-class MainActivity : AppCompatActivity() {
+<ProgressBar
+android:id="@+id/progressBar"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:visibility="gone"
+android:layout_gravity="center" />
 
-    private lateinit var binding: ActivityMainBinding
+<TextView
+android:id="@+id/sampleText"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:textSize="18sp"
+android:visibility="gone"
+android:layout_marginTop="16dp" />
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+<Button
+android:id="@+id/retryButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Retry"
+android:visibility="gone"
+android:layout_marginTop="8dp" />
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // Example of a call to a native method
-        binding.sampleText.text = stringFromJNI()
-    }
-
-    /**
-     * A native method that is implemented by the 'moonnet' native library,
-     * which is packaged with this application.
-     */
-    external fun stringFromJNI(): String
-
-    companion object {
-        // Used to load the 'moonnet' library on application startup.
-        init {
-            System.loadLibrary("moonnet")
-        }
-    }
-}
+</LinearLayout>
+</layout>

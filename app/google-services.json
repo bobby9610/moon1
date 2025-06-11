@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "631570682296",
+    "project_id": "mynethack-7856196d",
+    "storage_bucket": "mynethack-7856196d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631570682296:android:1c586cdc94b66f7fd17f4d",
+        "android_client_info": {
+          "package_name": "com.example.moonnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631570682296-0leliquvafvavln3eupvkmcn9rbl7qsl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "Com.example.moonnet",
+            "certificate_hash": "95cb8aad9ecb444ace7d7aee7b206ed1b8d3878a"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxR1AvigvJhWXEYTKewAUyE-OBqf8aaoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

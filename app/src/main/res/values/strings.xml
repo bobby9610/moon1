@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">moon net</string>
+    <string name="retry">Retry</string>
 </resources>
 
