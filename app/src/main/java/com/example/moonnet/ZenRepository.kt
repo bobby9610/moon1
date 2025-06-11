@@ -1,13 +1,33 @@
 package com.example.moonnet.data
 
-import com.example.moonnet.api.RetrofitProvider
+import android.util.Log
+import com.example.moonnet.API.RetrofitProvider
+import java.io.IOException
 
 class ZenRepository {
-    private val api = RetrofitProvider.api
+    private val api = RetrofitProvider.api  // ✅ Ensure API instance exists
 
-    suspend fun fetchZen(): Result<String> = try {
-        Result.success(api.getZen())
-    } catch (e: Exception) {
-        Result.failure(e)
+    fun fetchZenQuote(): Result<String> {
+        return try {
+            val response = api.getZenQuote().execute()  // ✅ Correct API call
+
+            if (!response.isSuccessful) {
+                Log.e("ZenRepository", "API error: ${response.code()}")
+                return Result.failure(Exception("Error: ${response.code()}"))
+            }
+
+            response.body()?.let {
+                Result.success(it)
+            } ?: Result.failure(Exception("Empty response from server"))
+
+        } catch (e: IOException) {
+            Log.e("ZenRepository", "Network error", e)
+            Result.failure(e)
+        }  // ✅ The catch block should **end** here
+
+    }
+
+    fun fetchZen(): Result<String> {
+        return fetchZenQuote()  // ✅ Correct placement, outside of `catch`
     }
 }

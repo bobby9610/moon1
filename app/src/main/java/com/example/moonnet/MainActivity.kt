@@ -1,35 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout
-xmlns:android="http://schemas.android.com/apk/res/android">
+package com.example.moonnet
 
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:padding="32dp">
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.example.moonnet.databinding.ActivityMainBinding
 
-<ProgressBar
-android:id="@+id/progressBar"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:visibility="gone"
-android:layout_gravity="center" />
+class MainActivity : AppCompatActivity() {
 
-<TextView
-android:id="@+id/sampleText"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:textSize="18sp"
-android:visibility="gone"
-android:layout_marginTop="16dp" />
+    private lateinit var binding: ActivityMainBinding
 
-<Button
-android:id="@+id/retryButton"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Retry"
-android:visibility="gone"
-android:layout_marginTop="8dp" />
-
-</LinearLayout>
-</layout>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+}
